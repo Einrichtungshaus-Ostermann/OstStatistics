@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- plugin services -->
+        <service id="ost_statistics.configuration_service" class="OstStatistics\Services\ConfigurationService">
+            <argument type="service" id="models" />
+            <argument type="service" id="shopware_storefront.context_service" />
+            <argument type="service" id="shopware.plugin.cached_config_reader" />
+            <argument type="string">OstStatistics</argument>
+        </service>
+
+        <service id="ost_statistics.statistics_service" class="OstStatistics\Services\StatisticsService">
+            <argument type="service" id="models" />
+            <argument type="service" id="session" />
+            <argument type="service" id="shopware_storefront.context_service" />
+            <argument type="service" id="front" />
+        </service>
+
+        <!-- frontend and widgets listener -->
+        <service id="ost_statistics.listeners.controllers.widgets.index.post_dispatch" class="OstStatistics\Listeners\Controllers\Widgets\Index">
+            <argument type="service" id="ost_statistics.statistics_service" />
+            <tag name="shopware.event_listener" method="onRefreshStatistic" event="Enlight_Controller_Action_Widgets_Index_refreshStatistic" />
+        </service>
+
+    </services>
+
+</container>
