@@ -12,12 +12,12 @@
 
 namespace OstStatistics\Setup;
 
+use Doctrine\ORM\Tools\SchemaTool;
+use OstStatistics\Models;
 use Shopware\Bundle\AttributeBundle\Service\CrudService;
 use Shopware\Components\Model\ModelManager;
-use Doctrine\ORM\Tools\SchemaTool;
 use Shopware\Components\Plugin;
 use Shopware\Components\Plugin\Context\InstallContext;
-use OstStatistics\Models;
 
 class Install
 {
@@ -28,16 +28,12 @@ class Install
      */
     protected $plugin;
 
-
-
     /**
      * ...
      *
      * @var InstallContext
      */
     protected $context;
-
-
 
     /**
      * ...
@@ -46,8 +42,6 @@ class Install
      */
     protected $modelManager;
 
-
-
     /**
      * ...
      *
@@ -55,18 +49,14 @@ class Install
      */
     protected $crudService;
 
-
     /**
      * ...
      *
      * @var array
      */
-
-    protected $models = array(
+    protected $models = [
         Models\Entry::class
-    );
-
-
+    ];
 
     /**
      * ...
@@ -85,8 +75,6 @@ class Install
         $this->crudService = $crudService;
     }
 
-
-
     /**
      * ...
      *
@@ -98,34 +86,26 @@ class Install
         $this->installModels();
     }
 
-
-
     /**
      * ...
-     *
-     * @return void
      */
-
     private function installModels()
     {
         // get entity manager
         $em = $this->modelManager;
 
         // get our schema tool
-        $tool = new SchemaTool( $em );
+        $tool = new SchemaTool($em);
 
         // ...
         $classes = array_map(
-            function( $model ) use ( $em ) {
-                return $em->getClassMetadata( $model );
+            function ($model) use ($em) {
+                return $em->getClassMetadata($model);
             },
             $this->models
         );
 
         // remove them
-        $tool->createSchema( $classes );
+        $tool->createSchema($classes);
     }
-
-
-
 }

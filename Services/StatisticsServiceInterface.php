@@ -16,8 +16,6 @@ interface StatisticsServiceInterface
 {
     /**
      * ...
-     *
-     * @return void
      */
     public function create();
 }

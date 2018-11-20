@@ -26,8 +26,6 @@ class ConfigurationService implements ConfigurationServiceInterface
      */
     protected $configuration;
 
-
-
     /**
      * ...
      *
@@ -52,10 +50,8 @@ class ConfigurationService implements ConfigurationServiceInterface
         );
     }
 
-
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function get($key = null)
     {

@@ -12,23 +12,21 @@
 
 namespace OstStatistics\Services;
 
-use Shopware\Components\Model\ModelManager;
-use Enlight_Controller_Request_Request as Request;
-use Enlight_Controller_Front as Front;
-use OstStatistics\Models\Entry;
 use Enlight_Components_Session_Namespace as Session;
+use Enlight_Controller_Front as Front;
+use Enlight_Controller_Request_Request as Request;
+use OstStatistics\Models\Entry;
 use Shopware\Bundle\StoreFrontBundle\Service\ContextServiceInterface;
+use Shopware\Components\Model\ModelManager;
 
 class StatisticsService implements StatisticsServiceInterface
 {
-
     /**
      * ...
      *
      * @var ModelManager
      */
     protected $modelManager;
-
 
     /**
      * ...
@@ -37,20 +35,12 @@ class StatisticsService implements StatisticsServiceInterface
      */
     protected $session;
 
-
-
-
-
     /**
      * ...
      *
      * @var ContextServiceInterface
      */
     protected $contextService;
-
-
-
-
 
     /**
      * ...
@@ -59,13 +49,13 @@ class StatisticsService implements StatisticsServiceInterface
      */
     protected $request;
 
-
-
     /**
      * ...
      *
      * @param ModelManager            $modelManager
-     * @param Front $front
+     * @param Front                   $front
+     * @param Session                 $session
+     * @param ContextServiceInterface $contextService
      */
     public function __construct(ModelManager $modelManager, Session $session, ContextServiceInterface $contextService, Front $front)
     {
@@ -76,10 +66,8 @@ class StatisticsService implements StatisticsServiceInterface
         $this->request = $front->Request();
     }
 
-
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function create()
     {
@@ -87,62 +75,56 @@ class StatisticsService implements StatisticsServiceInterface
         $entry = new Entry();
 
         // set it up
-        $entry->setDate( new \DateTime() );
-        $entry->setIp( $this->request->getClientIp() );
-        $entry->setSessionId( $this->session->offsetGet( "sessionId" ) );
-        $entry->setController( $this->request->getParam( "requestController" ) );
-        $entry->setKey( $this->getKey() );
-        $entry->setParams( null );
+        $entry->setDate(new \DateTime());
+        $entry->setIp($this->request->getClientIp());
+        $entry->setSessionId($this->session->offsetGet('sessionId'));
+        $entry->setController($this->request->getParam('requestController'));
+        $entry->setKey($this->getKey());
+        $entry->setParams(null);
 
         // save it
-        $this->modelManager->persist( $entry );
-        $this->modelManager->flush( $entry );
-
+        $this->modelManager->persist($entry);
+        $this->modelManager->flush($entry);
     }
-
-
 
     /**
      * ...
      *
-     * @return integer|null
+     * @return int|null
      */
     private function getKey()
     {
         // get the key by requested controller
-        switch ( $this->request->getParam( "requestController" ) )
-        {
+        switch ($this->request->getParam('requestController')) {
             // article details
-            case "detail":
+            case 'detail':
                 // return available article id
-                return (integer) $this->request->getParam( "articleId" );
+                return (int) $this->request->getParam('articleId');
 
             // category listing
-            case "listing":
+            case 'listing':
 
                 // find the shopware path by seo url
-                $query = "
+                $query = '
                     SELECT org_path
                     FROM s_core_rewrite_urls
                     WHERE path LIKE :path
                         AND main = 1
                         AND subshopID = :shopId
-                ";
-                $path = Shopware()->Db()->fetchOne( $query, array(
-                    'path' => ltrim( (string) $this->request->getParam( "requestPage" ), "/" ),
+                ';
+                $path = Shopware()->Db()->fetchOne($query, [
+                    'path'   => ltrim((string) $this->request->getParam('requestPage'), '/'),
                     'shopId' => $this->contextService->getShopContext()->getShop()->getParentId()
-                ));
+                ]);
 
                 // parse the string to get the category id
-                parse_str( $path, $arr );
+                parse_str($path, $arr);
 
                 // return the category id
-                return (integer) $arr['sCategory'];
+                return (int) $arr['sCategory'];
         }
 
         // no key context for this controller
         return null;
     }
-
-
 }

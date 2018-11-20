@@ -12,23 +12,17 @@
 
 namespace OstStatistics\Models;
 
+use Doctrine\ORM\Mapping as ORM;
 use Shopware\Components\Model\ModelEntity;
-use Doctrine\ORM\Mapping AS ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Shopware\Models\Shop\Shop;
 use Shopware\Models\Customer\Customer;
-
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Repository")
  * @ORM\Table(name="ost_statistics_entries")
  */
-
 class Entry extends ModelEntity
 {
-
     /**
      * Auto-generated id.
      *
@@ -38,24 +32,18 @@ class Entry extends ModelEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-
     private $id;
-
-
 
     /**
      * Date and time of the entry.
      *
-     * @var \DateTime   $date
+     * @var \DateTime
      *
      * @Assert\DateTime()
      *
      * @ORM\Column(name="`date`", type="datetime")
      */
-
     private $date;
-
-
 
     /**
      * The customer ip.
@@ -64,10 +52,7 @@ class Entry extends ModelEntity
      *
      * @ORM\Column(name="ip", type="string", nullable=false, length=64)
      */
-
     private $ip;
-
-
 
     /**
      * ...
@@ -76,10 +61,7 @@ class Entry extends ModelEntity
      *
      * @ORM\Column(name="sessionId", type="string", nullable=false, length=64)
      */
-
     private $sessionId;
-
-
 
     /**
      * The frontend controller.
@@ -88,10 +70,7 @@ class Entry extends ModelEntity
      *
      * @ORM\Column(name="controller", type="string", nullable=false, length=64)
      */
-
     private $controller;
-
-
 
     /**
      * The unique key - mostly the id parameter.
@@ -100,10 +79,7 @@ class Entry extends ModelEntity
      *
      * @ORM\Column(name="`key`", type="integer", nullable=true)
      */
-
     private $key;
-
-
 
     /**
      * Every other parameter as json string encoded.
@@ -112,23 +88,16 @@ class Entry extends ModelEntity
      *
      * @ORM\Column(name="params", type="text", nullable=true)
      */
-
     private $params;
-
-
-
 
     /**
      * ...
      */
-
     public function __construct()
     {
         // set default values
         $this->date = new \DateTime();
     }
-
-
 
     /**
      * Getter method for the property.
@@ -140,9 +109,6 @@ class Entry extends ModelEntity
         return $this->id;
     }
 
-
-
-
     /**
      * Getter method for the property.
      *
@@ -152,8 +118,6 @@ class Entry extends ModelEntity
     {
         return $this->date;
     }
-
-
 
     /**
      * Setter method for the property.
@@ -167,8 +131,6 @@ class Entry extends ModelEntity
         $this->date = $date;
     }
 
-
-
     /**
      * Getter method for the property.
      *
@@ -178,8 +140,6 @@ class Entry extends ModelEntity
     {
         return $this->ip;
     }
-
-
 
     /**
      * Setter method for the property.
@@ -193,8 +153,6 @@ class Entry extends ModelEntity
         $this->ip = $ip;
     }
 
-
-
     /**
      * Getter method for the property.
      *
@@ -204,8 +162,6 @@ class Entry extends ModelEntity
     {
         return $this->sessionId;
     }
-
-
 
     /**
      * Setter method for the property.
@@ -219,8 +175,6 @@ class Entry extends ModelEntity
         $this->sessionId = $sessionId;
     }
 
-
-
     /**
      * Getter method for the property.
      *
@@ -230,8 +184,6 @@ class Entry extends ModelEntity
     {
         return $this->controller;
     }
-
-
 
     /**
      * Setter method for the property.
@@ -245,8 +197,6 @@ class Entry extends ModelEntity
         $this->controller = $controller;
     }
 
-
-
     /**
      * Getter method for the property.
      *
@@ -256,8 +206,6 @@ class Entry extends ModelEntity
     {
         return $this->key;
     }
-
-
 
     /**
      * Setter method for the property.
@@ -271,8 +219,6 @@ class Entry extends ModelEntity
         $this->key = $key;
     }
 
-
-
     /**
      * Getter method for the property.
      *
@@ -282,8 +228,6 @@ class Entry extends ModelEntity
     {
         return $this->params;
     }
-
-
 
     /**
      * Setter method for the property.
@@ -296,5 +240,4 @@ class Entry extends ModelEntity
     {
         $this->params = $params;
     }
-
 }

@@ -34,8 +34,6 @@ class OstStatistics extends Enlight_Controller_Action implements CSRFWhitelistAw
         ));
     }
 
-
-
     /**
      * ...
      */

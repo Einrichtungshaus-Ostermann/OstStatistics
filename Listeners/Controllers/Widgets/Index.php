@@ -17,42 +17,32 @@ use OstStatistics\Services\StatisticsServiceInterface;
 
 class Index
 {
-
     /**
      * ...
      *
      * @var StatisticsServiceInterface
      */
-
     protected $statisticsService;
-
-
-
-    /**
-	 * ...
-	 *
-     * @param StatisticsServiceInterface    $statisticsService
-	 */
-
-	public function __construct( StatisticsServiceInterface $statisticsService )
-	{
-		// set params
-        $this->statisticsService = $statisticsService;
-	}
-
 
     /**
      * ...
      *
-     * @param EventArgs   $arguments
-     *
-     * @return void
+     * @param StatisticsServiceInterface $statisticsService
      */
+    public function __construct(StatisticsServiceInterface $statisticsService)
+    {
+        // set params
+        $this->statisticsService = $statisticsService;
+    }
 
-    public function onRefreshStatistic( EventArgs $arguments )
+    /**
+     * ...
+     *
+     * @param EventArgs $arguments
+     */
+    public function onRefreshStatistic(EventArgs $arguments)
     {
         // create an entry for this "click"
         $this->statisticsService->create();
     }
-    
 }
