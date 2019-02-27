@@ -13,6 +13,9 @@
  * - added params to statistics
  * - removed statistics for urls with specific flag
  *
+ * 1.0.2
+ * - fixed keys for campaign statistics
+ *
  * @package   OstStatistics
  *
  * @author    Eike Brandt-Warneke <e.brandt-warneke@ostermann.de>

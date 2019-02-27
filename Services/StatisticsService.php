@@ -124,6 +124,27 @@ class StatisticsService implements StatisticsServiceInterface
 
                 // return the category id
                 return (int) $arr['sCategory'];
+
+            // emotion start pages
+            case 'campaign':
+                // find the shopware path by seo url
+                $query = '
+                    SELECT org_path
+                    FROM s_core_rewrite_urls
+                    WHERE path LIKE :path
+                        AND main = 1
+                        AND subshopID = :shopId
+                ';
+                $path = Shopware()->Db()->fetchOne($query, [
+                    'path'   => ltrim((string) $this->request->getParam('requestPage'), '/'),
+                    'shopId' => $this->contextService->getShopContext()->getShop()->getParentId()
+                ]);
+
+                // parse the string to get the category id
+                parse_str($path, $arr);
+
+                // return the category id
+                return (int) $arr['emotionId'];
         }
 
         // no key context for this controller
