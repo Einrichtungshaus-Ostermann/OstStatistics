@@ -42,7 +42,29 @@ class Index
      */
     public function onRefreshStatistic(EventArgs $arguments)
     {
+        // get the referer
+        $referer = $_SERVER['HTTP_REFERER'];
+
+        // parse the url
+        $params = parse_url($referer);
+
+        // do we have query parameters? force a default value
+        if (!isset( $params['query'])) $params['query'] = "";
+
+        // get the query parameters
+        $query = array();
+        parse_str($params['query'], $query);
+
+        // set it for specific url params
+        // although we never use the params array anymore...
+        $params['query'] = $query;
+
+        // no statistics ever with long and short syntax
+        if ((isset($query['noStatistics'])) or (isset($query['nst'])))
+            // dont count anything
+            return;
+
         // create an entry for this "click"
-        $this->statisticsService->create();
+        $this->statisticsService->create($query);
     }
 }

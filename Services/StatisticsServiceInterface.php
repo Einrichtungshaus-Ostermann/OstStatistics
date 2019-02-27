@@ -16,6 +16,10 @@ interface StatisticsServiceInterface
 {
     /**
      * ...
+     *
+     * @param array $refererParams
+     *
+     * @return void
      */
-    public function create();
+    public function create(array $refererParams);
 }

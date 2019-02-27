@@ -69,10 +69,13 @@ class StatisticsService implements StatisticsServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function create()
+    public function create(array $refererParams)
     {
         // create an entry
         $entry = new Entry();
+
+        // get the url parameters
+        $params = $this->getParams($refererParams);
 
         // set it up
         $entry->setDate(new \DateTime());
@@ -80,7 +83,7 @@ class StatisticsService implements StatisticsServiceInterface
         $entry->setSessionId($this->session->offsetGet('sessionId'));
         $entry->setController($this->request->getParam('requestController'));
         $entry->setKey($this->getKey());
-        $entry->setParams(null);
+        $entry->setParams((empty($params) ? null : json_encode($params)));
 
         // save it
         $this->modelManager->persist($entry);
@@ -103,7 +106,6 @@ class StatisticsService implements StatisticsServiceInterface
 
             // category listing
             case 'listing':
-
                 // find the shopware path by seo url
                 $query = '
                     SELECT org_path
@@ -126,5 +128,69 @@ class StatisticsService implements StatisticsServiceInterface
 
         // no key context for this controller
         return null;
+    }
+
+    /**
+     * ...
+     *
+     * @param array $refererParams
+     *
+     * @return array
+     */
+    private function getParams($refererParams)
+    {
+        // ...
+        $params = array();
+
+        // ...
+        switch ($this->request->getParam('requestController')) {
+            // article details
+            case 'detail':
+                $params['action'] = "index";
+                break;
+
+            // category listing
+            case 'listing':
+                $params['action'] = "index";
+                break;
+
+            // default known controllers
+            case "checkout":
+            case "address":
+            case "account":
+            case "register":
+                $params['action'] = (ltrim($this->request->getParam('requestPage'), '/') == ltrim($this->request->getParam('requestController'), '/'))
+                    ? 'index'
+                    : trim(str_replace('/' . ltrim($this->request->getParam('requestController'), '/') . '/', '', $this->request->getParam('requestPage')), '/');
+                break;
+
+            // search
+            case "search":
+                // default action paramter
+                $params['action'] = "index";
+
+                // the search string
+                $params['search'] = $refererParams['sSearch'];
+
+                // and done
+                break;
+
+            // consultant article search
+            case "OstArticleSearch":
+                // default action paramter
+                $params['action'] = (ltrim($this->request->getParam('requestPage'), '/') == ltrim($this->request->getParam('requestController'), '/'))
+                    ? 'index'
+                    : trim(str_replace('/' . ltrim($this->request->getParam('requestController'), '/') . '/', '', $this->request->getParam('requestPage')), '/');
+
+                // do we have a specific search? or are we in the search form
+                if (isset($refererParams['ostas_search']))
+                    $params['ostas_search'] = $refererParams['ostas_search'];
+
+                // stop
+                break;
+        }
+
+        // ...
+        return $params;
     }
 }

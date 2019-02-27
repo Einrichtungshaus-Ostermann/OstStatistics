@@ -9,6 +9,10 @@
  * 1.0.0
  * - initial release
  *
+ * 1.0.1
+ * - added params to statistics
+ * - removed statistics for urls with specific flag
+ *
  * @package   OstStatistics
  *
  * @author    Eike Brandt-Warneke <e.brandt-warneke@ostermann.de>
